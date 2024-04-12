@@ -1,0 +1,4 @@
+Select to Run,State,Website,Type,ProductTag,LinkTag,ClickTag,Custom Scraper,Unnamed: 8
+False,COMPLETED,https://aws.amazon.com/marketplace/search/results?ref_=hmpg_categories_all%3Fref_%3Dhmpg_categories_promo&sort=CREATION_TIME-DESCENDING&pageSize=50,Pagination,CLASS_NAME|tlG1Q+k8VCJkz1CJvLE8pA== awsui_root_18wu0_10zld_99 awsui_box_18wu0_10zld_219 awsui_h4-variant_18wu0_10zld_223 awsui_p-vertical-n_18wu0_10zld_542 awsui_color-default_18wu0_10zld_219 awsui_font-size-default_18wu0_10zld_235 awsui_font-weight-default_18wu0_10zld_275|h2,,"CSS_SELECTOR|button[aria-label=""Next page""]",,
+False,COMPLETED,https://growthlist.co/b2b-startups/,Simple,CLASS_NAME|ninja_column_0 ninja_clmn_nm_name footable-first-visible|td,CLASS_NAME|ninja_column_1 ninja_clmn_nm_url|td,,,
+False,IDLE,https://www.gartner.com/reviews/market/ai-augmented-software-testing-tools,Load More,CLASS_NAME|card-headers|div,,CSS_SELECTOR|#products-or-vendors-section > div > div.pagination-section > button,,
