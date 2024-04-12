@@ -2,11 +2,11 @@
 
 ## Features
 
-- Scaping information from the web takes a great deal of time if code is written for each website manually and is executed sequentially. Hence the distributed master-slave approach is taken to execute a standard set of scrapers simultaneously.
+- Scraping information from the web takes a great deal of time if code is written for each website manually and is executed sequentially. Hence the distributed master-slave approach is taken to execute a standard set of scrapers simultaneously.
   If needed, an option is available to execute custom scraper code.
 - Segregation of Appraisal and Discovery stages by passing the scraped data to a message queue (RabbitMQ) for consumers to retrieve contact details while scrapers continue executing.
 - Contact details are retrieved by looking for social media links and email ids in text part of the html since they are typically at the footer of product page. If it does not return the details, it crawls the website for subsequent website links to check.
-- Contacting the companies by sending automated emails. At an given interval, the system rechecks if the contacted company has still not registered with G2 and resends an email.
+- Contacting the companies by sending automated emails. At a given interval, the system rechecks if the contacted company has still not registered with G2 and resends an email.
 - Creation of a GUI interface to allow admin/users to easily access and edit any part of the system.
 
 ## Project Directory and File Info
@@ -27,7 +27,7 @@
 3. Install chromedrivers from https://chromedriver.chromium.org for selenium
 4. Install rabbitmq from https://www.rabbitmq.com/docs/download
 5. Install mysql and run the create.sql script to create the database and table.
-6. Change the mysql connector info at Line 10 in moreinfo.py and at Line 15 in worker.py .(Soon to be added to the config file)
+6. Change the mysql connector info at Line 10 in moreinfo.py, at Line 17 in worker.py and at Line 90 and 103 in GUI/gui.py .(Soon to be added to the config file)
 7. Change the email info in emailService.py .(Soon to be added to the config file)
 
 ## How to Run
@@ -53,4 +53,4 @@
 - Experimenting with the use of LLMs on scraped data to increase the accuracy of finding contact details.
 - Creating bots to contact Companies through methods other than email such as social media websites.
 - Checking for new products from companies that have registered before.
-- Once a critical mass of company responses are received, analytics can be performed to find the cause for the lack of visibilty.
+- Once a critical mass of company responses are received, analytics can be performed to find the cause for the lack of visibility.

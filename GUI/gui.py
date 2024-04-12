@@ -7,10 +7,11 @@ import time
 import json
 
 def sendRequests(request,df):
-
+    # Sends a request to the master node to perform the scraping work of the select websites.
     r = requests.post("http://127.0.0.1:8001/allocateWork",json=request)
     print("Work Allocated!")
     masterAlive="0"
+    #Check if the workers are still running
     while(masterAlive=="0"):
         r = requests.get("http://127.0.0.1:8001/poll")
         print(r.text)
@@ -18,6 +19,7 @@ def sendRequests(request,df):
         with open('../config.json') as configFile:
             configFile=json.loads(configFile.read())
             time.sleep(configFile['pollInterval'])
+    #Once workers finish running change the state to 'Completed'
     df.loc[df["Select to Run"] == True, 'State'] = 'COMPLETED'
     df.loc[df["Select to Run"] == True, 'Select to Run'] = False
     df.to_csv('data.csv',index=False)
@@ -32,26 +34,22 @@ result_dataFrame = pd.DataFrame(
                 "ProductName": [],"emailId": [],"instagram": [],"instagram": [],"facebook": [],"linkedin": [],"twitter":[],"lastContacted":[]
             }
         )
-st.markdown("# RootCrawlers")
-st.markdown("## Key Websites")
 
+
+st.markdown("# RootCrawlers")
+
+st.markdown("## Key Websites")
 csv = pd.read_csv('data.csv')
-#csv.insert(0, 'State', 'IDLE')
-#csv.insert(0, 'Select to Run', False)
-#if 'data' not in st.session_state:
-#    st.session_state['data'] = csv
 edited_df = st.data_editor(csv)
 col1, col2, col3,col4 = st.columns([.15,.18,.15,.55])
-with col1:
 
+with col1:
     if st.button("⚡ Run"):
         print("Running")
         filteredDf = edited_df[edited_df['Select to Run']==True]
         request = filteredDf.drop(['State','Select to Run'], axis=1).to_json(orient = 'records',lines = False)
         edited_df.loc[edited_df["Select to Run"] == True, 'State'] = 'EXECUTING'
         edited_df.to_csv('data.csv',index=False)
-#        st.session_state['data']['Select to Run'] = edited_df['Select to Run']
-#        st.session_state['data'].loc[edited_df["Select to Run"] == True, 'State'] = 'EXECUTING'
         t = threading.Thread(target=sendRequests,args=(request,edited_df))
         t.start()
         print(request)
@@ -75,19 +73,21 @@ with col3:
 with col4:
     if st.button("⟳ Refresh"):
         st.rerun()
+
+
 st.markdown("## GA Products and their Contact Data")
 cols1, cols2,cols3 = st.columns([.8,.1,.1])
+
 with cols1:
     searchInput = st.text_input("Search by Product Name")
 with cols2:
-    st.markdown(' ### ')
-    
+    st.markdown(' ### ')  
     search = st.button("🔎")
     if search:
         mydb = mysql.connector.connect(
     host= "localhost",
     user= "root",
-    password= "Leginsaid322$",
+    password= "",
     database= "G2"
     )
         result_dataFrame = pd.read_sql("SELECT * FROM GA_Products where ProductName LIKE '%"+searchInput+"%'",mydb)
@@ -100,7 +100,7 @@ with cols3:
         mydb = mysql.connector.connect(
     host= "localhost",
     user= "root",
-    password= "Leginsaid322$",
+    password= "",
     database= "G2"
     )
         result_dataFrame = pd.read_sql("SELECT * FROM GA_Products",mydb)

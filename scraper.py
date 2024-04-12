@@ -43,7 +43,7 @@ def seleniumfind(browser, tag):
     elif typeOfTag == "PARTIAL_LINK_TEXT":
         return browser.find_element(By.PARTIAL_LINK_TEXT,tagVal)
     
-
+# Check if the product is in G2 or in the SQL DB
 def checkG2Product(product,mydb):
     r = requests.get('https://data.g2.com/api/v1/products?filter[name]="'+product.replace(" ","+")+'"',headers={'Authorization':"Token b79944ecab1dbbfab91806e5b2e4856cf81d217dc8699e4da812af618130ccec"})
     g2Data = json.loads(r.text)
@@ -71,7 +71,7 @@ def createFullURL(URL,href):
     
 
 
-
+# Gets the data and parses it
 def plainwebscraper(URL,productElement,mydb,channel,linkElement=None):
     # Simple Web Scraping from a single page
     browser=webdriver.Chrome()
@@ -91,12 +91,12 @@ def plainwebscraper(URL,productElement,mydb,channel,linkElement=None):
     else:
         for productName in soupfind(soup,productElement):
             productName = productName.get_text()
-            r = requests.get("https://autocomplete.clearbit.com/v1/companies/suggest?query="+productName.replace(" ","+"))
+            r = requests.get("https://autocomplete.clearbit.com/v1/companies/suggest?query="+productName.replace(" ","+")) # API that gets the domain name of the company from the company name
             websiteLink = r[0]['domain'] if r.length !=0 else ''
             print(productName,websiteLink)
     browser.close()
 
-
+# Clicks on the load more button until all the data is received and parses it
 def loadMorewebscraper(URL,loadMoreButton,productElement,mydb,channel):
     # Keep clicking on the load more button until all the products are retrieved.
     browser=webdriver.Chrome()
@@ -122,7 +122,7 @@ def loadMorewebscraper(URL,loadMoreButton,productElement,mydb,channel):
                         body=(productLink+' '+productText).encode('utf-8'))
     browser.close()
 
-
+# Loads the data of each page and parses it and moves to the next.
 def paginationwebscraper(URL,paginationButton,productElement,mydb,channel):
     #Retrive all info on current page then move to next.
     browser=webdriver.Chrome()
@@ -150,11 +150,7 @@ def paginationwebscraper(URL,paginationButton,productElement,mydb,channel):
     browser.close()
 
 
-#def linkedInScraper():
-#def twitterScraper():
-
-#plainwebscraper("https://growthlist.co/b2b-startups/","td","td")
-#loadMorewebscraper("https://www.gartner.com/reviews/market/ai-augmented-software-testing-tools")
+# Handles checking if the product is on G2 and the message sending functionality
 def customScraperWrapper(productText,productLink,mydb,channel):
     if checkG2Product(productText,mydb)==False:
         print(productText,productLink)

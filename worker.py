@@ -6,6 +6,8 @@ import pika
 import mysql.connector
 import json
 import signal
+
+# Make Connections
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
 
@@ -18,21 +20,19 @@ mydb = mysql.connector.connect(
   password= "",
   database= "G2"
 )
+#Import standard scraper functions from scraper.py
 from scraper import *
+
 def closeConn(signum, frame):
     connection.close()
     mydb.close()
-
+#Close connection on Cntrl+C interrupt
 signal.signal(signal.SIGINT, closeConn)
 app = Flask(__name__) 
 busy = 0
 t = None
 def scrapingWork(content):
-    '''
-    Parameters:
-    Product title
-    ('Simple','Load More','Pagination','Custom')
-    '''
+    # Perform web scraping based on type
     try:
         print(content)
         if content['Type']== 'Simple':
@@ -47,6 +47,8 @@ def scrapingWork(content):
         print(e)
         return e
 
+# ROUTES
+# Check if the worker is busy
 @app.route('/poll')
 def polling():
     if t == None:
@@ -56,6 +58,7 @@ def polling():
             return "0"
         else:
             return "1"
+# Async request to perform scraping action
 @app.route('/scrape', methods = ['POST']) 
 def scraper():
     global t

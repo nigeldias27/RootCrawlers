@@ -6,6 +6,8 @@ import time
 import requests
 app = Flask(__name__) 
 t = None
+
+# Returns a list of all free workers
 def checkAliveness(workers):
     print("Check aliveness",workers)
     aliveWorkers = []
@@ -19,7 +21,7 @@ def checkAliveness(workers):
             print(e)
             continue
     return aliveWorkers
-
+# Distributes the scraping work among all available workers and checks to see when all workers finished executing.
 def allocateWork(websiteContent):
     allocatedWorkers = []
     with open('config.json') as configFile:
@@ -44,7 +46,8 @@ def allocateWork(websiteContent):
                 if response.text== "1":
                     allocatedWorkers.remove(worker)
                     print(allocatedWorkers)
-
+# ROUTE
+# Checks if the master node is busy 
 @app.route('/poll')
 def polling():
     if t == None:
@@ -54,7 +57,7 @@ def polling():
             return "0"
         else:
             return "1"
-
+# Allocates work to worker nodes
 @app.route('/allocateWork',methods = ["POST"])
 def getReq():
     global t

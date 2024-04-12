@@ -14,15 +14,18 @@ mydb = mysql.connector.connect(
   database= "G2"
 )
 browser=webdriver.Chrome()
+
 def sendEmail(emailId):
     print("Sent email to",emailId)
+
+# Checks if the given page has emailID, social media links
 def emailSocialLink(soup):
     links = soup.find_all('a')
     socialLinks = {}
     for data in soup(['style', 'script']):
         data.decompose()
-    r =  ' '.join(soup.stripped_strings)
-    emailList = re.findall(r"[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}",r)
+    r =  ' '.join(soup.stripped_strings) # Remove the html tags from the html content, returning the rendered text
+    emailList = re.findall(r"[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}",r) # Regex to find email
     
     if len(emailList) != 0:
         socialLinks['emailId'] = emailList[0] 
@@ -74,20 +77,13 @@ channel = connection.channel()
 
 channel.queue_declare(queue='hello')
 
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
-    try:
-        visitLink(body.decode('utf-8').split(' ')[0],' '.join(body.decode('utf-8').split(' ')[1:]))
-    except Exception as e:
-        print(e)
-    channel.basic_ack(method.delivery_tag)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 
-#channel.basic_consume('hello',callback,auto_ack=False)
+
 while True:
-    method_frame, header_frame, body = channel.basic_get(queue='hello',auto_ack=False)
-    if method_frame:
+    method_frame, header_frame, body = channel.basic_get(queue='hello',auto_ack=False) # Get message from message queue
+    if method_frame: # If message exits
         print(" [x] Received %r" % body)
         try:
             visitLink(body.decode('utf-8').split(' ')[0],' '.join(body.decode('utf-8').split(' ')[1:]))

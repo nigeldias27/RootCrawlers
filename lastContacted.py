@@ -1,10 +1,11 @@
 import mysql.connector
 import time
 from datetime import datetime
+# Resends the mail if timeout is passed and the product is not on G2 yet.
 mydb = mysql.connector.connect(
   host= "localhost",
   user= "root",
-  password= "Leginsaid322$",
+  password= "",
   database= "G2"
 )
 while True:
@@ -15,10 +16,10 @@ while True:
     myresult = mycursor.fetchone()
 
     mycursor.close()
-    mostrecentDateTime= datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+    mostrecentDateTime= datetime.strptime(myresult[-1], '%Y-%m-%d %H:%M:%S')
     dateTimeNow = datetime.now()
     time.sleep((mostrecentDateTime -dateTimeNow).total_seconds())
-
+    # TODO add function to actually send the mail when needed
     sendemail()
     mycursor = mydb.cursor()
 

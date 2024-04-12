@@ -2,6 +2,7 @@ import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+# Send automated email to the interested company
 sender_email = "nigeldias27@yahoo.com"
 receiver_email = "nigeldias27@gmail.com"
 password = ''
@@ -11,7 +12,7 @@ message["Subject"] = "Invitation to Feature Your B2B Software Product on G2"
 message["From"] = sender_email
 message["To"] = receiver_email
 
-# Create the plain-text and HTML version of your message
+
 html = """\
 <html>
   <body>
@@ -41,7 +42,6 @@ G2 Lead Generation Team
 </html>
 """
 
-# Turn these into plain/html MIMEText objects
 
 part2 = MIMEText(html, "html")
 
