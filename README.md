@@ -4,14 +4,18 @@
 
 - Scraping information from the web takes a great deal of time if code is written for each website manually and is executed sequentially. Hence the distributed master-slave approach is taken to execute a standard set of scrapers simultaneously.
   If needed, an option is available to execute custom scraper code.
-- Segregation of Appraisal and Discovery stages by passing the scraped data to a message queue (RabbitMQ) for consumers to retrieve contact details while scrapers continue executing.
+- Segregation of Appraisal and Discovery stages by passing the scraped data to a message queue (RabbitMQ) for consumers to retrieve contact details while scrapers continue executing. 
 - Contact details are retrieved by looking for social media links and email ids in text part of the html since they are typically at the footer of product page. If it does not return the details, it crawls the website for subsequent website links to check.
 - Contacting the companies by sending automated emails. At a given interval, the system rechecks if the contacted company has still not registered with G2 and resends an email.
 - Creation of a GUI interface to allow admin/users to easily access and edit any part of the system.
 
 ## Project Directory and File Info
 
-- **GUI:** Consists of all the streamlit code. 1.**gui.py:** Home page of the streamlit app where the user can send scrapers for execution and where the user can view all the scraped content. 2.**pages/Config.py:** Allows a user to update the contents of the config.json file 3.**pages/Add.py:** Adds a new scraper to the data.csv file.
+- **GUI:** Consists of all the streamlit code.
+  
+  1. **gui.py:** Home page of the streamlit app where the user can send scrapers for execution and where the user can view all the scraped content.
+  2. **pages/Config.py:** Allows a user to update the contents of the config.json file
+  3. **pages/Add.py:** Adds a new scraper to the data.csv file.
 - **master.py:** Distributes the scrapers among all the available workers.
 - **worker.py:** Executes the scraper by filling in the parameters from standard scrapers in scraper.py or execute custom scraper. The scraped content i.e the generally available product name or website is sent moreInfo.py using a message queue (RabbitMQ)
 - **scraper.py:** Standard scraper codes such as click on load more button, pagination button until all the content is retrieved.
