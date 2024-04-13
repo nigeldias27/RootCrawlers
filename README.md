@@ -34,6 +34,7 @@
 6. Change the mysql connector info at Line 10 in moreinfo.py, at Line 17 in worker.py and at Line 90 and 103 in GUI/gui.py .(Soon to be added to the config file)
 7. Change the email info in emailService.py .(Soon to be added to the config file)
 
+Note: Dockerfiles will be created soon to make this process easier; until then, I apologize for the inconvenience!
 ## How to Run
 
 1. Start rabbitmq
@@ -54,7 +55,7 @@
 
 ## Future Work
 
-- Experimenting with the use of LLMs on scraped data to increase the accuracy of finding contact details.
+- Experimenting with the use of LLMs on scraped data to increase the accuracy of finding contact details. (Dilemma on tradeoff between accuracy and inference time)
 - Creating bots to contact Companies through methods other than email such as social media websites.
-- Checking for new products from companies that have registered before.
+- Checking for new products from companies that have registered before. (Requires access to the entire G2 product API)
 - Once a critical mass of company responses are received, analytics can be performed to find the cause for the lack of visibility.
